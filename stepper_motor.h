@@ -65,7 +65,7 @@ StepperMotor::StepperMotor() {
   pinMode(PIN_ENCODER_DT,INPUT);
   pinMode(PIN_ENCODER_SW,INPUT);
   digitalWrite(PIN_ENCODER_SW, HIGH);     // Pull-Up resistor for switch
-  attachInterrupt (0, isr, FALLING);      // interrupt 0 always connected to pin 2 on Arduino UNO
+  attachInterrupt (20, isr, FALLING);      // interrupt 0 always connected to pin 2 on Arduino UNO
   count_down = 0;
   enable_encoder = false;
   enable_IR = false;
@@ -74,7 +74,7 @@ StepperMotor::StepperMotor() {
 int StepperMotor::process(int opt) {
   Serial.print("StepperMotor::process, opt = ");
   Serial.println(opt);
-  if (count_down == 0) { 
+  if (count_down == 0) {
     DeviceBase::pLEDIndicator->process(LED_STEPPER_TURNING | LED_INDICATOR_OFF);
     if (enable_IR && ((opt == KEY_PLUS) || (opt == KEY_MINUS))) {
       rotationdirection = (opt == KEY_PLUS);       // CCW=>rotationdirection true
@@ -139,7 +139,7 @@ void StepperMotor::updateTime() {
     run_step(stepToTake);
 //    mystepper.step(stepToTake * (rotationdirection ? -1 : 1));
     turned = false;
-  } 
+  }
 }
 void StepperMotor::run_step(int num_steps) {
   Serial.print("StepperMotor rotationdirection=");
