@@ -10,11 +10,12 @@ static const int LED_DURATION = 1;
  */
 class SoundDevices : public DeviceBase {
   unsigned int count_down = 0;
-  
+
 public:
   SoundDevices();
   virtual int process(int opt=0);
   virtual void updateTime();
+  virtual void clean() {;};
 };
 ////////
 SoundDevices::SoundDevices() {

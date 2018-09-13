@@ -36,12 +36,13 @@ static Keypad customKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROW
 class  UserInput : public DeviceBase {
   unsigned int count_down;
   decode_results results;
-  
+
 public:
   UserInput();
   virtual ~UserInput() {;};
   virtual int process(int opt=NON_INPUT);
   virtual void updateTime();
+  virtual void clean();
 private:
   int readIR();                 // get IR code received
   int readKeyPad(char );                  // read key pad
@@ -49,8 +50,11 @@ private:
 //////////////
 UserInput::UserInput() {
   count_down = 0;
-//  Serial.println("UserInput");
+  Serial.println("UserInput");
   irrecv.enableIRIn();                // Start the receiver
+}
+void UserInput::clean() {
+  count_down = 0;  
 }
 int UserInput::process(int opt) {
   int ret = NON_INPUT;
@@ -65,7 +69,7 @@ int UserInput::process(int opt) {
     count_down =  TIME_DELAY;
     Serial.print("UserInput::process: ret=");
     Serial.println(ret);
-  } else 
+  } else
     count_down = 0;
   return ret;
 }
@@ -105,35 +109,35 @@ int UserInput::readIR() {
       switch(results.value) {
         case 0xFF22DD:                  // Serial.println("FAST BACK");
         case 0xFFE01F:                  // Serial.println("DOWN");
-          ret = KEY_MINUS; 
-          break;        
+          ret = KEY_MINUS;
+          break;
         case 0xFFC23D:                  // Serial.println("FAST FORWARD");
         case 0xFF906F:                  // Serial.println("UP");
-          ret = KEY_PLUS; 
-          break;         
-        case 0xFF6897: 
-          ret = KEY_0; 
+          ret = KEY_PLUS;
+          break;
+        case 0xFF6897:
+          ret = KEY_0;
           break;
         case 0xFF30CF:                   //Serial.println("1");    break;
           ret = KEY_1;
           break;
         case 0xFF18E7:                  // Serial.println("2");    break;
-          ret = KEY_2; 
+          ret = KEY_2;
           break;
-        case 0xFF7A85:                  
-          ret = KEY_3; 
-          break; 
-        case 0xFF10EF:                  
-          ret = KEY_4; 
+        case 0xFF7A85:
+          ret = KEY_3;
           break;
-        case 0xFF38C7:                  
-          ret = KEY_5; 
+        case 0xFF10EF:
+          ret = KEY_4;
           break;
-        case 0xFF5AA5:                  
-          ret = KEY_6; 
+        case 0xFF38C7:
+          ret = KEY_5;
           break;
-        case 0xFF42BD: 
-          ret = KEY_7;        
+        case 0xFF5AA5:
+          ret = KEY_6;
+          break;
+        case 0xFF42BD:
+          ret = KEY_7;
           break;
 //  case 0xFF4AB5: Serial.println("8");    break;
 //  case 0xFF52AD: Serial.println("9");    break;
@@ -147,7 +151,7 @@ int UserInput::readIR() {
           ret = KEY_INVALID;           //Serial.println(" other button   ");
       }
       irrecv.resume(); // receive the next value
-    } 
+    }
   } while (!bFound && (repeat > 0));
 //  Serial.print("irrecv, code=");
 //  Serial.println(code, HEX);

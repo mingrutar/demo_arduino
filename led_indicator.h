@@ -42,18 +42,22 @@ public:
 
   virtual int process(int opt);
   virtual void updateTime();
+  virtual void clean();
 
 private:
   byte turn_led(byte last, int pos, bool on);
-  void updateShiftRegister(byte sr);
+  void updateShiftRegister(byte b);
 };
-
 /////
 LED_Indicator::LED_Indicator() {
   pinMode(PIN_74HC595_LATCH, OUTPUT);
   pinMode(PIN_74HC595_DATA, OUTPUT);
   pinMode(PIN_74HC595_CLOCK, OUTPUT);
-  updateShiftRegister(0);
+  updateShiftRegister(B0);
+  delay(SHORT_DELAY_TIME);
+}
+void LED_Indicator::clean() {
+  updateShiftRegister(B0);
   delay(SHORT_DELAY_TIME);
 }
 int LED_Indicator::process(int opt) {
@@ -62,13 +66,9 @@ int LED_Indicator::process(int opt) {
   Serial.print("LED_Indicator::process: pos=");
   Serial.print(pos, BIN);
   Serial.print(", ison=");
-  Serial.print(ison);
-  Serial.print(", lastleds==");
-  Serial.print(leds);
+  Serial.println(ison);
 
   leds = turn_led(leds, pos, ison);
-  Serial.print(", leds==");
-  Serial.println(leds);
   updateShiftRegister(leds);
   delay(SHORT_DELAY_TIME);
 }
@@ -82,12 +82,12 @@ byte LED_Indicator::turn_led(byte last, int pos, bool on) {
     ret = last | mybit;
    else
     ret = ~mybit & last;
-//  if (ret != last) {
-//    Serial.print("LED_Indicator::turn_led: ret=");
-//    Serial.print(ret, BIN);
-//    Serial.print(", last=");
-//    Serial.println(last, BIN);
-//  }
+  if (ret != last) {
+    Serial.print("LED_Indicator::turn_led: ret=");
+    Serial.print(ret, BIN);
+    Serial.print(", last=");
+    Serial.println(last, BIN);
+  }
   return ret;
 }
 void LED_Indicator::updateShiftRegister(byte sr) {

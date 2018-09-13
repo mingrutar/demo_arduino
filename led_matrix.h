@@ -76,6 +76,8 @@ public:
 
   virtual int process(int opt);
   virtual void updateTime();
+  virtual void clean();
+  
 private:
   void show_random();
 };

@@ -56,12 +56,13 @@ class OptionSelector : public DeviceBase {
   unsigned int count_down = 0;
   char msgbuff[2][MAX_LCD_LEN+1];
   bool show_menu;
-  
+
 public:
   OptionSelector(const char* name);
   virtual ~OptionSelector() {;};
   virtual int process(int input_key);
   virtual void updateTime();
+  virtual void clean();
 
 private:
   void showAllOptions();
@@ -109,6 +110,11 @@ int OptionSelector::process(int sel_option) {
   display_lines();
   return ret;
 }
+void OptionSelector::clean() {
+  count_down = 0;
+  lcd.clear();
+}
+
 void OptionSelector::printHelp(long sel) {
   strcpy(this->msgbuff[0], DEFAULT_L1);
   long randNumber = sel == -1 ? random(num_quotes()) : sel;

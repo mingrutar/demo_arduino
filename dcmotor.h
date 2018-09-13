@@ -22,7 +22,7 @@ class DCMotorFan : public DeviceBase {
 
   unsigned int count_down = 0;
   const int* prun;
-  
+
 public:
   DCMotorFan();
   ~DCMotorFan() {
@@ -30,6 +30,7 @@ public:
   };
   virtual int process(int );
   virtual void updateTime();
+  virtual void clean();
 
 private:
   void run_fan();
@@ -44,6 +45,12 @@ DCMotorFan::DCMotorFan() {
   pinMode(PIN_L293D_DIRB, OUTPUT);
   prun = NULL;
 }
+void DCMotorFan::clean() {
+  count_down = 0;
+  write_out(LOW, LOW, LOW);
+  prun = NULL;
+}
+
 int DCMotorFan::process(int opt) {
   write_out(LOW, LOW, LOW);         // turn off first
   if (opt == KEY_1) {
@@ -51,7 +58,7 @@ int DCMotorFan::process(int opt) {
     prun =  &forward_reverse[0];
   } else if (opt ==  KEY_2) {
 //    Serial.print("DCMotorFan::run_fan: fastSlow");
-    prun = &fast_slow[0]; 
+    prun = &fast_slow[0];
   } else if (opt == KEY_3) {
 //    Serial.print("DCMotorFan::run_fan: all");
     prun = &run_all[0];

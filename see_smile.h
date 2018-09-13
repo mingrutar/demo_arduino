@@ -29,11 +29,11 @@ public:
   SeeSmile(LEDMatrix* leds);
   virtual int process(int );
   virtual void updateTime();
+  virtual void clean();
 
 private:
   bool turn_search(int startpos, int endpos, int offset);
   void do_search(int n_times);
-  void reset();
 };
 
 ////
@@ -47,18 +47,24 @@ SeeSmile::SeeSmile(LEDMatrix* leds) {
 //  delay(SERVO_DELAY);                   // wait for a sec
   Serial.println("SeeSmile::SeeSmile()2");
   led_matrix = leds;
+  clean();
+}
+void SeeSmile::clean() {
+  myservo.write(SERVO2POS);
+  delay(SERVO_DELAY * 2);
+  myservo.detach();
 }
 int SeeSmile::process(int ) {
   enabled = !enabled;
   if (!enabled) {
-    reset();
+    clean();
     led_matrix->process(LEDS_RANDOM);
     DeviceBase::pLEDIndicator->process(LED_SEE_SMILE_ONOFF | LED_INDICATOR_OFF);
     DeviceBase::pLEDIndicator->process(LED_MONITOR_DETECTED | LED_INDICATOR_OFF);
     DeviceBase::pLEDIndicator->process(LED_ULTRASOUND_DETECTED | LED_INDICATOR_OFF);
   } else {
     DeviceBase::pLEDIndicator->process(LED_SEE_SMILE_ONOFF | LED_INDICATOR_ON);
-    myservo.write(SERVO2POS); 
+    myservo.write(SERVO2POS);
     delay(SERVO_DELAY * 2);
   }
 }
@@ -70,7 +76,7 @@ void SeeSmile::updateTime() {
     if (pirValue == 1) {  // detect
       DeviceBase::pLEDIndicator->process(LED_MONITOR_DETECTED | LED_INDICATOR_ON);
       do_search(SERVO_N_TURN);
-    } 
+    }
   }
 }
 void SeeSmile::do_search(int n_times) {
@@ -85,7 +91,7 @@ void SeeSmile::do_search(int n_times) {
       bSearch = !turn_search(180, 0, -SERVO_TURN_DEGREE);
     }
   }
-  reset();
+  clean();
 }
 bool SeeSmile::turn_search(int start, int end, int offset) {
   int pos = start;
@@ -105,9 +111,3 @@ bool SeeSmile::turn_search(int start, int end, int offset) {
   }
   return false;
 }
-void SeeSmile::reset() {
-  myservo.write(SERVO2POS); 
-  delay(SERVO_DELAY * 2);
-  myservo.detach();
-}
-

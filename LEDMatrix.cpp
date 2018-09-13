@@ -27,12 +27,7 @@ void ByColumn::show() {
  * LEDMatrix
  */
 LEDMatrix::LEDMatrix() {
-  lc.shutdown(0,false);
-  /* Set the brightness to a medium values */
-  lc.setIntensity(0, 4);
-  /* and clear the display */
-  lc.clearDisplay(0);
-  // Serial.println("LEDMatrix::LEDMatrix");
+	clean();
 
   display_arr[0] = new Pattern(smile);
   display_arr[1] = new Pattern(heart);
@@ -50,7 +45,15 @@ LEDMatrix::LEDMatrix() {
   // Serial.println("LEDMatrix::LEDMatrix 2");
   show_random();
 }
-
+void LEDMatrix::clean() {
+	lc.shutdown(0,false);
+  /* Set the brightness to a medium values */
+  lc.setIntensity(0, 4);
+  /* and clear the display */
+  lc.clearDisplay(0);
+  // Serial.println("LEDMatrix::LEDMatrix");
+	count_down = 0;
+}
 int LEDMatrix::process(int opt) {
 	Serial.print("LEDMatrix::process, opt=");
   Serial.println(opt);

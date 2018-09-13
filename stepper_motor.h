@@ -53,6 +53,7 @@ public:
   StepperMotor();
   virtual int process(int opt);
   virtual void updateTime();
+  virtual void clean();
 
 private:
   void run_step(int num_steps);
@@ -70,6 +71,12 @@ StepperMotor::StepperMotor() {
   enable_encoder = false;
   enable_IR = false;
   mystepper.setSpeed(MaxStepSpeed);
+}
+void StepperMotor::clean() {
+  resetMotor();
+  count_down = 0;
+  enable_encoder = false;
+  enable_IR = false;
 }
 int StepperMotor::process(int opt) {
   Serial.print("StepperMotor::process, opt = ");

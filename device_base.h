@@ -118,7 +118,7 @@ public:
 
   virtual int process(int ) = 0;
   virtual void updateTime() = 0;
-
+  virtual void clean() {;};
   static LED_Indicator *pLEDIndicator;
 };
 #endif  // DEVICE_BASE_H
