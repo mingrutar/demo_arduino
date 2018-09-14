@@ -39,12 +39,12 @@ static const char* dev_names[] = {"Input", "LCD", "DCMotor", "Stepper Motor",  \
 static bool switches[NUM_DEVICE] = {
   true,         // DEV_Input
   true,         // DEV_selector
-  true,        // DEV_DCMotor
-  true,        // DEV_StepperMotor
-  false,        // DEV_SEE_SMILE
+  true,         // DEV_DCMotor
+  true,         // DEV_StepperMotor
+  true,         // DEV_SEE_SMILE
   true,         // DEV_LED_Matrix
-  false,        // DEV_LED_Indicator
-  true};        // DEV_Sound
+  true,         // DEV_LED_Indicator
+  true };       // DEV_Sound
 
 
 LED_Indicator* DeviceBase::pLEDIndicator = NULL;
