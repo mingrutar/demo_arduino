@@ -1,6 +1,7 @@
 
-//www.elegoo.com
-//2016.12.8
+//
+// based on www.elegoo.com tutorial
+//
 
 // Define Pins
 const int BLUE1 = 3;
@@ -23,19 +24,6 @@ int blueValue = 0;
 void setup()
 {
   Serial.begin(9600);
-//  pinMode(RED1, OUTPUT);
-//  pinMode(GREEN1, OUTPUT);
-//  pinMode(BLUE1, OUTPUT);
-//  pinMode(RED2, OUTPUT);
-//  pinMode(GREEN2, OUTPUT);
-//  pinMode(BLUE2, OUTPUT);
-//  digitalWrite(RED1, LOW);
-//  digitalWrite(RED2, LOW);
-//  digitalWrite(GREEN1, LOW);
-//  digitalWrite(GREEN2, LOW);
-//  digitalWrite(BLUE1, LOW);
-//  digitalWrite(BLUE2, LOW);
-
   analogWrite(RED1, redValue);
   analogWrite(RED2, redValue);
   analogWrite(GREEN1, greenValue);
@@ -52,8 +40,8 @@ void loop()
   greenValue = 0;
   blueValue = 0;
   // this is unnecessary as we've either turned on RED in SETUP
-  // or in the previous loop ... regardless, this turns RED off   
-  Serial.println("1 red(255,0), greenValue(0, 255)"); 
+  // or in the previous loop ... regardless, this turns RED off
+  Serial.println("1 red(255,0), greenValue(0, 255)");
   for(int i = 0; i < MAX_VALUE; i += 1) // fades out red bring green full when i=255
   {
     redValue -= 1;
@@ -71,7 +59,7 @@ void loop()
   greenValue = MAX_VALUE;
   blueValue = 0;
 
-  Serial.println("2 green(255,0), blueValue(0,255)");  
+  Serial.println("2 green(255,0), blueValue(0,255)");
   for(int i = 0; i < MAX_VALUE; i += 1) // fades out green bring blue full when i=255
   {
     greenValue -= 1;
@@ -89,7 +77,7 @@ void loop()
   greenValue = 0;
   blueValue = MAX_VALUE;
 
-  Serial.println("3 blue(255,0), redValue(0,255)");  
+  Serial.println("3 blue(255,0), redValue(0,255)");
   for(int i = 0; i < MAX_VALUE; i += 1) // fades out blue bring red full when i=255
   {
     // The following code has been rearranged to match the other two similar sections
@@ -106,5 +94,3 @@ void loop()
   }
   delay(delayTime);
 }
-
-
