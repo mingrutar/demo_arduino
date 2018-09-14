@@ -50,14 +50,16 @@ private:
 };
 /////
 LED_Indicator::LED_Indicator() {
+  leds = B0;
   pinMode(PIN_74HC595_LATCH, OUTPUT);
   pinMode(PIN_74HC595_DATA, OUTPUT);
   pinMode(PIN_74HC595_CLOCK, OUTPUT);
-  updateShiftRegister(B0);
+  updateShiftRegister(leds);
   delay(SHORT_DELAY_TIME);
 }
 void LED_Indicator::clean() {
-  updateShiftRegister(B0);
+  leds = B0;
+  updateShiftRegister(leds);
   delay(SHORT_DELAY_TIME);
 }
 int LED_Indicator::process(int opt) {

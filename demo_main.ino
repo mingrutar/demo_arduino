@@ -34,17 +34,33 @@ static const int DEV_Sound = 7;
 static const int NUM_DEVICE = 8;
 
 static DeviceBase* devices[NUM_DEVICE];
+static const char* dev_names[] = {"Input", "LCD", "DCMotor", "Stepper Motor",  \
+                                 "Smile & See", "LED Matrix", "LED Indicator", "Sound"};
+static bool switches[NUM_DEVICE] = {
+  true,         // DEV_Input
+  true,         // DEV_selector
+  true,        // DEV_DCMotor
+  true,        // DEV_StepperMotor
+  false,        // DEV_SEE_SMILE
+  true,         // DEV_LED_Matrix
+  false,        // DEV_LED_Indicator
+  true};        // DEV_Sound
+
+
 LED_Indicator* DeviceBase::pLEDIndicator = NULL;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("setup");
-  for (int i = 0; i < NUM_DEVICE; i++) {
-    devices[i] = NULL;
-  }
   // set up the LCD's number of columns and rows:
   randomSeed(analogRead(0));
-  Serial.println("demomain:setup");
+  Serial.print("demomain:setup, switches are: ");
+  for (int i = 0; i < NUM_DEVICE; i++) {
+    devices[i] = NULL;
+    Serial.print(dev_names[i]);
+    Serial.print(" is ");
+    Serial.print(switches[i] ? "on" : "off");
+    Serial.println("\n          ");
+  }
   devices[DEV_Input] =  new UserInput();              // 0 - input
   devices[DEV_DCMotor] = new DCMotorFan();            // - DCmotor
   devices[DEV_StepperMotor] = new StepperMotor();     // 4 - Stepper motor
@@ -59,17 +75,16 @@ void setup() {
 void loop(){
   devices[DEV_Sound]->process(NON_INPUT);
 //  Serial.println("loop");
-
-  ret_val = devices[DEV_Input]->process(NON_INPUT);             // read input
+  ret_val = devices[DEV_Input]->process(NON_INPUT);       // read input
   if (ret_val != NON_INPUT) {
     Serial.print("loop, input ret_val=");
     Serial.println(ret_val);
-    ret_val = devices[DEV_selector]->process(ret_val);   // verify the input
-    if ((ret_val >= KEY_0) && (ret_val <= KEY_3)) {
+    ret_val = devices[DEV_selector]->process(ret_val);    // verify the input
+    if (switches[DEV_DCMotor] && (ret_val >= KEY_0) && (ret_val <= KEY_3)) {
       devices[DEV_DCMotor]->process(ret_val);
-    } else if ((ret_val==0) || ((ret_val >= KEY_4) && (ret_val <= KEY_6)) || (ret_val == KEY_PLUS) || (ret_val == KEY_MINUS)) {
+    } else if (switches[DEV_StepperMotor] && ((ret_val == 0) || ((ret_val >= KEY_4) && (ret_val <= KEY_6)) || (ret_val == KEY_PLUS) || (ret_val == KEY_MINUS))) {
       devices[DEV_StepperMotor]->process(ret_val);
-    } else if (ret_val == KEY_7) {
+    } else if (switches[DEV_SEE_SMILE] && (ret_val == KEY_7)) {
       devices[DEV_SEE_SMILE]->process(KEY_7);
     } else {
       Serial.print("demomain: unknown key input=");

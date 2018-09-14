@@ -34,8 +34,8 @@ static void isr ()  {
     rotationdirection= digitalRead(PIN_ENCODER_DT);
   else
     rotationdirection= !digitalRead(PIN_ENCODER_DT);
-//  Serial.print("isr, rotationdirection = ");
-//  Serial.println(rotationdirection?"true":"false");
+  Serial.print("isr, rotationdirection = ");
+  Serial.println(rotationdirection?"true":"false");
   turned = true;
 }
 /**
@@ -111,8 +111,10 @@ int StepperMotor::process(int opt) {
       } else if (opt == KEY_6) {
         count_down = 0;
         enable_IR = false;
-        DeviceBase::pLEDIndicator->process(LED_STEPPER_IR_ONOFF | LED_INDICATOR_OFF);
         enable_encoder = !enable_encoder;
+        DeviceBase::pLEDIndicator->process(LED_STEPPER_IR_ONOFF | LED_INDICATOR_OFF);
+        Serial.print("enable_encoder=");
+        Serial.println(enable_encoder ? "true" : " false");
         show_msg(myMessages[enable_encoder ? 2 : 3], 1, true);
         if (!enable_encoder) {
           count_down = ONE_RUN;                     // turn off next update
@@ -137,14 +139,13 @@ void StepperMotor::updateTime() {
       rotationdirection = -1;
       Serial.println("StepperMotor::updateTime counterclockwise");
       run_step(stepsPerRevolution);
-//      mystepper.step(-stepsPerRevolution);
     } else if (count_down == 0) {
       unlock_display();
       resetMotor();
     }
   } else if (enable_encoder && turned) {
+    Serial.print("StepperMotor::enable_encoder && turned");
     run_step(stepToTake);
-//    mystepper.step(stepToTake * (rotationdirection ? -1 : 1));
     turned = false;
   }
 }

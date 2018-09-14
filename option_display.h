@@ -24,7 +24,7 @@ static unsigned int msg_expire_time = 0;
 static const int TIME_DELAY_CHANGE = 25;   // N sec show the current selection
 static const int TIME_DELAY_ERROR = 20;     // N sec prompt for enter a new option
 static const int TIME_INTERVAL = 10;        // N sec change quotes
-static const int SHOW_HELP_INTERVAL = 3000;  // N msec for help
+static const int SHOW_HELP_INTERVAL = 1000;  // N msec for help
 
 static bool lock_display = false;
 void show_msg(const char* msg, int ln, bool lock=true) {
@@ -138,6 +138,7 @@ void OptionSelector::showAllOptions() {
     display_lines();
     delay(SHOW_HELP_INTERVAL);
   }
+  printHelp();
 }
 
 void OptionSelector::updateTime() {
