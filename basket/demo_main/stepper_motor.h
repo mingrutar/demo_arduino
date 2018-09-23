@@ -5,6 +5,8 @@
 #include <IRremote.h>
 #include "led_indicator.h"
 
+#define PIN_INTERRUPT 2
+
 static const int STEP = 32;     // Number of steps for one revolution of Internal shaft
                           // 2048 steps for one revolution of External shaft
 static const int MaxStepSpeed = 200;        // 20, 500, 700
@@ -35,7 +37,7 @@ static void isr ()  {
   else
     rotationdirection= !digitalRead(PIN_ENCODER_DT);
   Serial.print("isr, rotationdirection = ");
-  Serial.println(rotationdirection?"true":"false");
+  Serial.println(rotationdirection ? "true" : "false");
   turned = true;
 }
 /**
@@ -65,8 +67,9 @@ StepperMotor::StepperMotor() {
   pinMode(PIN_ENCODER_CLK,INPUT);
   pinMode(PIN_ENCODER_DT,INPUT);
   pinMode(PIN_ENCODER_SW,INPUT);
+  pinMode(PIN_INTERRUPT, INPUT_PULLUP);
   digitalWrite(PIN_ENCODER_SW, HIGH);     // Pull-Up resistor for switch
-  attachInterrupt (20, isr, FALLING);      // interrupt 0 always connected to pin 2 on Arduino UNO
+  attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), isr, FALLING);      // interrupt 0 always connected to pin 2 on Arduino UNO
   count_down = 0;
   enable_encoder = false;
   enable_IR = false;
