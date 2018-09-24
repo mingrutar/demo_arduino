@@ -19,8 +19,8 @@ static const int AUTO_RUNS = 2;             // clockwise & counterclockwise
 static const int ONE_RUN = 1;                // clockwise | counterclockwise
 
 // initialize the stepper library on pins 8 through 11:
-static bool rotationdirection;     // true - counterclockwise, false = clockwise
-static bool turned = false;
+static volatile bool rotationdirection;     // true - counterclockwise, false = clockwise
+static volatile bool turned = false;
 
 extern void show_msg(const char* msg, int ln, bool lock);
 extern void unlock_display();
@@ -31,13 +31,13 @@ static Stepper mystepper(STEP, PIN_STEPPER_COILIN1, PIN_STEPPER_COILIN3, PIN_STE
 
 // Interrupt routine runs if CLK goes from HIGH to LOW
 static void isr ()  {
-  delay(4);  // delay for Debouncing
+  delay(3);  // delay for Debouncing
+  Serial.println("in isr");
   if (digitalRead(PIN_ENCODER_CLK))
     rotationdirection= digitalRead(PIN_ENCODER_DT);
   else
     rotationdirection= !digitalRead(PIN_ENCODER_DT);
-  Serial.print("isr, rotationdirection = ");
-  Serial.println(rotationdirection ? "true" : "false");
+//  Serial.println("isr, rotationdirection = ", rotationdirection);
   turned = true;
 }
 /**
@@ -116,12 +116,12 @@ int StepperMotor::process(int opt) {
         enable_IR = false;
         enable_encoder = !enable_encoder;
         DeviceBase::pLEDIndicator->process(LED_STEPPER_IR_ONOFF | LED_INDICATOR_OFF);
-        Serial.print("enable_encoder=");
+        Serial.print("!!!enable_encoder=");
         Serial.println(enable_encoder ? "true" : " false");
         show_msg(myMessages[enable_encoder ? 2 : 3], 1, true);
         if (!enable_encoder) {
           count_down = ONE_RUN;                     // turn off next update
-          DeviceBase::pLEDIndicator->process(LED_STEPPER_ENCODER_ONOFF | LED_INDICATOR_OFF);
+          DeviceBase::pLEDIndicator->process(LED_STEPPER_ENCODER_ONOFF | LED_INDICATOR_OFF); //
         } else {
           DeviceBase::pLEDIndicator->process(LED_STEPPER_ENCODER_ONOFF | LED_INDICATOR_ON);
         }

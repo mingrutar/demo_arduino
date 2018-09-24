@@ -91,8 +91,8 @@ const int KEY_MINUS = 22;
 
 //// 74HC595 LED indicators
 const byte LED_SEE_SMILE_ONOFF = 0;        //
-const byte LED_STEPPER_IR_ONOFF = 1;       //
-const byte LED_STEPPER_ENCODER_ONOFF = 2;  //
+const byte LED_STEPPER_IR_ONOFF = 2;       //
+const byte LED_STEPPER_ENCODER_ONOFF = 1;  // #3 LED not working
 const byte LED_SOUND_HEARD = 3;
 const byte LED_MONITOR_DETECTED = 4;       //
 const byte LED_ULTRASOUND_DETECTED = 5;

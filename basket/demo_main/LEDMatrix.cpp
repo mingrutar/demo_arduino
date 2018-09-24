@@ -31,7 +31,8 @@ LEDMatrix::LEDMatrix() {
 
   display_arr[0] = new Pattern(smile);
   display_arr[1] = new Pattern(heart);
-	display_arr[2] = new Pattern(big_o);
+//	display_arr[2] = new Pattern(big_o);
+  display_arr[2] = new Pattern(look9);
 	display_arr[3] = new Pattern(sad);
 	display_arr[4] = new Pattern(look1);
 	display_arr[5] = new Pattern(look2);
@@ -40,6 +41,7 @@ LEDMatrix::LEDMatrix() {
 	display_arr[8] = new Pattern(look5);
 	display_arr[9] = new Pattern(look6);
 	display_arr[10] = new Pattern(look7);
+  display_arr[11] = new Pattern(look8);
   // display_arr[4] = new ByRow();
   // display_arr[5] = new ByColumn();
   // Serial.println("LEDMatrix::LEDMatrix 2");

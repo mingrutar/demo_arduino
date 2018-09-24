@@ -65,10 +65,10 @@ void LED_Indicator::clean() {
 int LED_Indicator::process(int opt) {
   byte pos = opt & 0xFF;
   bool ison = (opt & 0xFF00 ) == LED_INDICATOR_ON;
-  Serial.print("LED_Indicator::process: pos=");
-  Serial.print(pos, BIN);
-  Serial.print(", ison=");
-  Serial.println(ison);
+//  Serial.print("LED_Indicator::process: pos=");
+//  Serial.print(pos, BIN);
+//  Serial.print(", ison=");
+//  Serial.println(ison);
 
   leds = turn_led(leds, pos, ison);
   updateShiftRegister(leds);
@@ -85,10 +85,10 @@ byte LED_Indicator::turn_led(byte last, int pos, bool on) {
    else
     ret = ~mybit & last;
   if (ret != last) {
-    Serial.print("LED_Indicator::turn_led: ret=");
-    Serial.print(ret, BIN);
-    Serial.print(", last=");
-    Serial.println(last, BIN);
+//    Serial.print("LED_Indicator::turn_led: ret=");
+//    Serial.print(ret, BIN);
+//    Serial.print(", last=");
+//    Serial.println(last, BIN);
   }
   return ret;
 }
