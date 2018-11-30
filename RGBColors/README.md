@@ -5,4 +5,4 @@ Components:
  - a Green LED
  - a Blue LED
  
- ![]./simple.jpg
+ ![](./simple.jpg)
